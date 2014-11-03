@@ -1,0 +1,9 @@
+@import "addons.scss";
+@import "vaadin_lastfmclient.scss";
+
+/* This file prefixes all rules with the theme name to avoid causing conflicts with other themes. */
+/* The actual styles should be defined in vaadin_lastfmclient.scss */
+.vaadin_lastfmclient {
+  @include addons;
+  @include vaadin_lastfmclient;
+}
