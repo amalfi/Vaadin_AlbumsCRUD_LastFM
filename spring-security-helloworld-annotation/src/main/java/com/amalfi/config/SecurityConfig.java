@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception
 	{
-		List<User> usersList = UserControllers.getUserFromDB("mkyong");
+		List<User> usersList = UserControllers.getUserFromDB();
 		for(User currentUser : usersList)
 		{
 			auth.inMemoryAuthentication().withUser(currentUser.getLogin()).password(currentUser.getPassword()).roles(currentUser.getRole());

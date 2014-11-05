@@ -35,13 +35,12 @@ public class UserControllers
 		return bUserExist;
 	}
 
-	public static List<User> getUserFromDB(String username)
+	public static List<User> getUserFromDB()
 	{
 		List<User> users = new ArrayList<User>();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		User user=null;
-		Query query = session.createQuery("from User where login = :login ");
-		query.setParameter("login", username );
+		Query query = session.createQuery("from User where");
 		 //jezeli lista jest pusta nie ma Usera o takim loginie w bazie i mozna rejestrowac
 		List list = query.list();
 	
