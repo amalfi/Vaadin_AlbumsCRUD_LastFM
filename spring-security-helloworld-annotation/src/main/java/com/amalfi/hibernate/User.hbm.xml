@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+ 
+<hibernate-mapping>
+    <class name="com.amalfi.model.User" table="users" catalog="public">
+       
+        <id name="userId" type="java.lang.Integer">
+            <column name="userId" />
+            <generator class="native" />
+        </id>
+        
+        <property name="login" type="string">
+            <column name="login" length="50" not-null="true" unique="true" />
+        </property>
+    
+        <property name="password" type="string">
+            <column name="password" length="50" not-null="true" unique="true" />
+        </property>
+   	
+   	    <property name="role" type="string">
+            <column name="role" length="50" not-null="true" unique="false" />
+        </property>
+   	
+        
+    </class>
+</hibernate-mapping>
