@@ -16,7 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.vaadin_lastfmclient.parser.model.Album;
+import com.vaadin_lastfmclient.parser.model.MusicAlbum;
 import com.vaadin_lastfmclient.request.RequestService;
 
 /**
@@ -26,9 +26,9 @@ import com.vaadin_lastfmclient.request.RequestService;
  */
 public class XMLDOMParser {
 
-  public ArrayList<Album> getAlbumsFromRequest(String sXMLDataFromRequest)
+  public ArrayList<MusicAlbum> getAlbumsFromRequest(String sXMLDataFromRequest)
   {
-	  ArrayList<Album> allAlbumsFromRequest = new ArrayList<Album>();	
+	  ArrayList<MusicAlbum> allAlbumsFromRequest = new ArrayList<MusicAlbum>();	
 		   try
 		   {   
 		   InputStream stream = new ByteArrayInputStream(sXMLDataFromRequest.getBytes(StandardCharsets.UTF_8));
@@ -64,18 +64,14 @@ public class XMLDOMParser {
 					     Element lstNmElmnt = (Element) lstNmElmntLst.item(0);
 					     NodeList lstNm = lstNmElmnt.getChildNodes();
 					     
-					     Album currentAlbum = new Album();
+					     MusicAlbum currentAlbum = new MusicAlbum();
 					     System.out.println("Nazwa albumu : "
 					       + ((Node) fstNm.item(0)).getNodeValue());
-					     currentAlbum.setName(String.valueOf(((Node) fstNm.item(0)).getNodeValue()));
+					     currentAlbum.setAlbumName(String.valueOf(((Node) fstNm.item(0)).getNodeValue()));
 					     
 					     System.out.println("Okladka : "
 					       + ((Node) sstNm.item(0)).getNodeValue());
 						 currentAlbum.setImage(String.valueOf(((Node) sstNm.item(0)).getNodeValue()));	
-					     
-					     System.out.println("Url albumu : "
-					       + ((Node) lstNm.item(0)).getNodeValue());
-					     currentAlbum.setUrl(((Node) lstNm.item(0)).getNodeValue());
 					     
 					     allAlbumsFromRequest.add(currentAlbum);
 				    }

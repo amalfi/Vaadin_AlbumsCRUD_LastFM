@@ -23,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		for(User currentUser : usersList)
 		{
 			auth.inMemoryAuthentication().withUser(currentUser.getLogin()).password(currentUser.getPassword()).roles(currentUser.getRole());
+			
 		}
 	}
 

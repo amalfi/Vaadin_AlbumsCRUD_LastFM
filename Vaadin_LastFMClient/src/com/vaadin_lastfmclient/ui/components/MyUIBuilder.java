@@ -22,17 +22,16 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin_lastfmclient.parser.model.Album;
-import com.vaadin_lastfmclient.parser.model.AlbumController;
+import com.vaadin_lastfmclient.parser.model.MusicAlbum;
+import com.vaadin_lastfmclient.parser.model.MusicAlbumController;
 
 public class MyUIBuilder extends AbstractOrderedLayout
 {
-
 	private static final long serialVersionUID = 1816329191331869852L;
 
 	public HorizontalSplitPanel returnLayout()
 	{
-		final AlbumController ac = new AlbumController();
+		final MusicAlbumController ac = new MusicAlbumController();
 		final FormLayout formLayout = new FormLayout();
 		final HorizontalSplitPanel horizontalSplitPanel = new HorizontalSplitPanel();
 		
@@ -40,22 +39,26 @@ public class MyUIBuilder extends AbstractOrderedLayout
 		final TextArea taArtistInfo = new TextArea("Album Informations");
 		final TextField tfNameOfArtist = new TextField("Name of Artist");
 		final NativeSelect nsAlbumDropdownList = new NativeSelect("List of entered artist albums");
-		Button button = new Button("Load albums of this Artist");
+		final Button button = new Button("Load albums of this Artist");
 		final Button bLoadAlbumInfo = new Button("Load album cover");
+		final Button addAlbumInformationToDb= new Button("Add album information to db");
 		//--------------------------------------------------------Adding Components to Layout
-		VerticalLayout leftLayout = new VerticalLayout();
-		leftLayout.addComponent(tfNameOfArtist);
-		leftLayout.addComponent(button);
-		leftLayout.setMargin(true);
+		//VerticalLayout leftLayout = new VerticalLayout();
+		VerticalLayout leftLayout = LeftLayoutBuilder.returnLeftLayout();
+		
 		
 		final VerticalLayout rightLayout = new VerticalLayout();
+		rightLayout.addComponent(tfNameOfArtist);
+		rightLayout.addComponent(button);
 		rightLayout.addComponent(nsAlbumDropdownList);
 		rightLayout.addComponent(bLoadAlbumInfo);
-
+		rightLayout.addComponent(addAlbumInformationToDb);
 		rightLayout.setMargin(true);
 		
 		horizontalSplitPanel.addComponent(leftLayout);
 		horizontalSplitPanel.addComponent(rightLayout);
+		
+		rightLayout.setVisible(false); //do wywolania z klasy LeftLayoutBuilder pod buttonListenerem przycisku addAlbumUsingDataFromLastFM
 	
 		//-------------------------------------------------------
 		formLayout.setMargin(true);
@@ -65,12 +68,12 @@ public class MyUIBuilder extends AbstractOrderedLayout
 			private static final long serialVersionUID = 4966144306516781670L;
 			public void buttonClick(ClickEvent event) 
 			{
-				ArrayList<Album> albumsInfo = new ArrayList<Album>();
+				ArrayList<MusicAlbum> albumsInfo = new ArrayList<MusicAlbum>();
 				albumsInfo=ac.returnAllAlbums(String.valueOf(tfNameOfArtist.getValue()));
 
-				for(Album currentAlbum : albumsInfo)
+				for(MusicAlbum currentAlbum : albumsInfo)
 					{
-						nsAlbumDropdownList.addItem(currentAlbum.getName());
+						nsAlbumDropdownList.addItem(currentAlbum.getAlbumName());
 					}
 			}
 		});
@@ -80,22 +83,24 @@ public class MyUIBuilder extends AbstractOrderedLayout
 			private static final long serialVersionUID = 4966144306516781670L;
 			public void buttonClick(ClickEvent event) 
 			{
-				ArrayList<Album> albumsInfo = new ArrayList<Album>();
+				ArrayList<MusicAlbum> albumsInfo = new ArrayList<MusicAlbum>();
 				String sCurrentValue = nsAlbumDropdownList.getValue().toString();
 				
 				albumsInfo=ac.returnAllAlbums(String.valueOf(tfNameOfArtist.getValue()));
-				for(Album currentAlbum : albumsInfo)
+				for(MusicAlbum currentAlbum : albumsInfo)
 				{
 					
-					if(currentAlbum.getName().equals(nsAlbumDropdownList.getValue()))
+					if(currentAlbum.getAlbumName().equals(nsAlbumDropdownList.getValue()))
 					{
 						Image currentAlbumImage = new Image(sCurrentValue, 
 								new ExternalResource(currentAlbum.getImage()));
 						rightLayout.removeAllComponents();
+						rightLayout.addComponent(tfNameOfArtist);
+						rightLayout.addComponent(button);
 						rightLayout.addComponent(nsAlbumDropdownList);
 						rightLayout.addComponent(bLoadAlbumInfo);
-						
 						rightLayout.addComponent(currentAlbumImage);
+						rightLayout.addComponent(addAlbumInformationToDb);
 					}
 				}
 			}
