@@ -61,8 +61,9 @@ public class MusicAlbumController
  		return db;
 	}
 	
-	public List<MusicAlbum> findAll(){
-		return db;
+	public List<MusicAlbum> findAll()
+	{
+		return this.db;
 	}
 
 }

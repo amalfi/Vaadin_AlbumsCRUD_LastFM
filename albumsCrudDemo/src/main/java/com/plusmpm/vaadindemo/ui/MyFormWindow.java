@@ -1,7 +1,7 @@
 package com.plusmpm.vaadindemo.ui;
 
-import com.example.vaadindemo.domain.Person;
-import com.example.vaadindemo.service.PersonManager;
+import com.example.vaadindemo.domain.MusicAlbum;
+import com.example.vaadindemo.service.MusicAlbumManager;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.util.BeanItem;
@@ -18,39 +18,43 @@ public class MyFormWindow extends Window
 {
 	private static final long serialVersionUID = 1L;
 
-	public MyFormWindow(final String sMainOperationType, final PersonManager personManager, final Person person , BeanItem<Person> personItem, final BeanItemContainer<Person> persons) 
+	public MyFormWindow(final String sMainOperationType, final MusicAlbumManager musicAlbumsManager, final MusicAlbum musicAlbum , BeanItem<MusicAlbum> musicAlbumItem, final BeanItemContainer<MusicAlbum> musicAlbums) 
 	{
 		setModal(true);
 		center();
 
 		final FormLayout form = new FormLayout();
-		final FieldGroup binder = new FieldGroup(personItem);
+		final FieldGroup binder = new FieldGroup(musicAlbumItem);
 
-		final Button saveBtn = new Button(/*" Add person "*/sMainOperationType);
+		final Button saveChanges = new Button(sMainOperationType);
 		final Button cancelBtn = new Button(" Anuluj ");
+		final Button getDataFromLastFm= new Button("Get data from lastFm");
+		
+		form.addComponent(binder.buildAndBind("Nazwa artysty", "artistName"));
+		form.addComponent(binder.buildAndBind("Nazwa albumu", "albumName"));
+		form.addComponent(binder.buildAndBind("Okladka albumu", "image"));
 
-		form.addComponent(binder.buildAndBind("Nazwisko", "lastName"));
-		form.addComponent(binder.buildAndBind("Rok urodzenia", "yob"));
-		form.addComponent(binder.buildAndBind("Imie", "firstName"));
 		//form.addComponent(binder.buildAndBind("Id", "id"));
 		
 		binder.setBuffered(true);
 
-		binder.getField("lastName").setRequired(true);
-		binder.getField("firstName").setRequired(true);
+		binder.getField("artistName").setRequired(true);
+		binder.getField("albumName").setRequired(true);
+		binder.getField("image").setRequired(true);
 
+		
 		VerticalLayout fvl = new VerticalLayout();
 		fvl.setMargin(true);
 		fvl.addComponent(form);
 		
 		HorizontalLayout hl = new HorizontalLayout();
-		hl.addComponent(saveBtn);
+		hl.addComponent(saveChanges);
 		hl.addComponent(cancelBtn);
 		fvl.addComponent(hl);
 
 		setContent(fvl);
 
-		saveBtn.addClickListener(new ClickListener() {
+		saveChanges.addClickListener(new ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -65,27 +69,27 @@ public class MyFormWindow extends Window
 					e.printStackTrace();
 				}
 				
-				person.setLastName(binder.getField("lastName").getValue().toString());
-				person.setFirstName(binder.getField("firstName").getValue().toString());
-				person.setYob(binder.getField("yob").getValue().toString());
-				
+				musicAlbum.setArtistName(binder.getField("artistName").getValue().toString());
+				musicAlbum.setArtistName(binder.getField("albumName").getValue().toString());
+				musicAlbum.setArtistName(binder.getField("image").getValue().toString());
+			
 				
 				if(sMainOperationType.equals("Add"))
 				{
-					personManager.addPerson(person);
-					persons.addAll(personManager.findAll());
+					musicAlbumsManager.addMusicAlbum(musicAlbum);
+					musicAlbums.addAll(musicAlbumsManager.findAll());
 				}
 				if(sMainOperationType.equals("Edit"))
 				{
-					personManager.saveChanges(person);
-					persons.removeAllItems();
-					persons.addAll(personManager.findAll());
+					musicAlbumsManager.saveChanges(musicAlbum);
+					musicAlbums.removeAllItems();
+					musicAlbums.addAll(musicAlbumsManager.findAll());
 				}
 				if(sMainOperationType.equals("Delete"))
 				{
-					personManager.deletePerson(person);
-					persons.removeAllItems();
-					persons.addAll(personManager.findAll());
+					musicAlbumsManager.deletePerson(musicAlbum);
+					musicAlbums.removeAllItems();
+					musicAlbums.addAll(musicAlbumsManager.findAll());
 				}
 				
 				close();
