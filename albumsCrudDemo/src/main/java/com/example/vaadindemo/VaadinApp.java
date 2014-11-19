@@ -39,8 +39,7 @@ public class VaadinApp extends UI {
 	Table musicAlbumsTable=null;
 	private BeanItem<MusicAlbum> musicAlbumItem = new BeanItem<MusicAlbum>(musicAlbum);
 
-	private BeanItemContainer<MusicAlbum> musicAlbums = new BeanItemContainer<MusicAlbum>(
-			MusicAlbum.class);
+	private BeanItemContainer<MusicAlbum> musicAlbums = new BeanItemContainer<MusicAlbum>(MusicAlbum.class);
 
 	private int getLastIdFromDB()
 	{
@@ -195,7 +194,6 @@ public class VaadinApp extends UI {
 			@Override
 			public void buttonClick(ClickEvent event) 
 			{
-				MusicAlbumManager musicAlbumsManager = new MusicAlbumManager();
 				addWindow(new MyFormWindow("Edit"));
 			}
 		});
@@ -254,20 +252,34 @@ public class VaadinApp extends UI {
 	{
 		private static final long serialVersionUID = 1L;
 
-		public MyFormWindow(final String sMainOperationType) {
+		public MyFormWindow(final String sMainOperationType) 
+		{
 			setModal(true);
 			center();
 
+			int tableSize = musicAlbumsTable.size();
+			System.out.println(tableSize);
+			if(tableSize!=0)
+			{
 			Object rowId = musicAlbumsTable.getValue();
 			Integer id = (Integer) musicAlbumsTable.getContainerProperty(rowId, "id").getValue();
 			String artistName = (String) musicAlbumsTable.getContainerProperty(rowId, "artistName").getValue();
 			String albumName = (String) musicAlbumsTable.getContainerProperty(rowId, "albumName").getValue();
 			String image = (String) musicAlbumsTable.getContainerProperty(rowId, "image").getValue();
 			
-			musicAlbum.setArtistName(String.valueOf(id));
+			musicAlbum.setId(id);
 			musicAlbum.setArtistName(artistName);
 			musicAlbum.setAlbumName(albumName);
 			musicAlbum.setImage(image);
+			}
+			else
+			{
+				musicAlbum.setId(0);
+				musicAlbum.setArtistName("Artist name");
+				musicAlbum.setAlbumName("Album name");
+				musicAlbum.setImage("Image");
+			}
+			
 			
 			final FormLayout form = new FormLayout();
 			final FieldGroup binder = new FieldGroup(musicAlbumItem);
@@ -317,6 +329,23 @@ public class VaadinApp extends UI {
 					{
 						id=id+1;
 					}
+					int tableSize = musicAlbumsTable.size();
+					System.out.println(tableSize);
+					if(tableSize!=0)
+					{
+					Object rowId = musicAlbumsTable.getValue();
+					Integer id2 = (Integer) musicAlbumsTable.getContainerProperty(rowId, "id").getValue();
+					String artistName = (String) musicAlbumsTable.getContainerProperty(rowId, "artistName").getValue();
+					String albumName = (String) musicAlbumsTable.getContainerProperty(rowId, "albumName").getValue();
+					String image = (String) musicAlbumsTable.getContainerProperty(rowId, "image").getValue();
+					
+					musicAlbum.setArtistName(String.valueOf(id2));
+					musicAlbum.setArtistName(artistName);
+					musicAlbum.setAlbumName(albumName);
+					musicAlbum.setImage(image);
+					}
+					else
+					{
 					musicAlbum.setId(id);
 					String sArtistName = binder.getField("artistName").getValue().toString();
 					musicAlbum.setArtistName(binder.getField("artistName").getValue().toString());
@@ -324,8 +353,8 @@ public class VaadinApp extends UI {
 					musicAlbum.setAlbumName(binder.getField("albumName").getValue().toString());
 					String image = binder.getField("image").getValue().toString();
 					musicAlbum.setImage(binder.getField("image").getValue().toString());
-					
-					
+					}
+				
 					if(sMainOperationType.equals("Add"))
 					{
 						musicAlbumManager.addMusicAlbum(musicAlbum);

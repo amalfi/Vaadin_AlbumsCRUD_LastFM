@@ -26,6 +26,10 @@ public class MusicAlbumManager {
 	
 	public List<MusicAlbum> saveChanges(MusicAlbum musicAlbum)
 	{
+		if(db.isEmpty())
+		{
+			db.add(musicAlbum);
+		}
 		for(MusicAlbum p : db)
 		{	
 			if(p.getId()==musicAlbum.getId())
@@ -34,6 +38,7 @@ public class MusicAlbumManager {
 				db.set(index, musicAlbum);
 			}
 		}
+		
 		return db;
 	}
 	
