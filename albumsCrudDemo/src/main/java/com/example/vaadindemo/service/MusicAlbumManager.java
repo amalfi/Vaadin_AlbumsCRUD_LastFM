@@ -20,8 +20,8 @@ public class MusicAlbumManager {
 	
 	public void addMusicAlbum(MusicAlbum musicAlbum)
 	{
-		MusicAlbum ma = new MusicAlbum(getCurrentId(db), musicAlbum.getAlbumName(), musicAlbum.getArtistName(), musicAlbum.getImage());
-		db.add(ma);
+		//MusicAlbum ma = new MusicAlbum(getCurrentId(db), musicAlbum.getAlbumName(), musicAlbum.getArtistName(), musicAlbum.getImage());
+		db.add(musicAlbum);
 	}
 	
 	public List<MusicAlbum> saveChanges(MusicAlbum musicAlbum)
