@@ -46,7 +46,7 @@ public class MusicAlbumManager {
  		MusicAlbum toRemove = null;
 		for(MusicAlbum ma : db)
  		{
- 			if (musicAlbum.getArtistName().equals(musicAlbum.getAlbumName()) && musicAlbum.getImage().equals(musicAlbum.getId()))
+			if (ma.getId()==musicAlbum.getId())
  			{
  				toRemove = ma;
  			}
