@@ -167,9 +167,10 @@ public class VaadinApp extends UI {
 						rightvl.addComponent(tfNameOfArtist);
 						rightvl.addComponent(buttonLoadArtistAlbums);
 						rightvl.addComponent(nsAlbumDropdownList);
+						rightvl.addComponent(addAlbumInformationToDb);
 						rightvl.addComponent(bLoadAlbumInfo);
 						rightvl.addComponent(currentAlbumImage);
-						rightvl.addComponent(addAlbumInformationToDb);
+						
 					}
 				}
 			}
@@ -274,16 +275,22 @@ public class VaadinApp extends UI {
 			String artistName = null;
 			String albumName = null;
 			String image = null;
-			
+			Integer id=0;
 			int tableSize = musicAlbumsTable.size();
 			System.out.println(tableSize);
 			if(tableSize!=0)
 			{
 		    //****Check if is null or empty fill with some example values
 			Object rowId = musicAlbumsTable.getValue();
-			//Integer id = (Integer) musicAlbumsTable.getContainerProperty(rowId, "id").getValue();
-			Integer id=tableSize+1;
-			
+			if(tableSize==1)
+			{
+			id=1;
+			}
+			if(tableSize>1)
+			{
+			id=tableSize+1;
+			}
+			System.out.println(id);
 				if(Tools.isNull(rowId))
 				{
 					artistName="Nazwa artysty";
@@ -355,12 +362,10 @@ public class VaadinApp extends UI {
 						e.printStackTrace();
 					}
 					int tableSize = musicAlbumsTable.size();
-
 					int id = tableSize;
-					if(sMainOperationType.equals("Add")!=true)
+					if(id==0)
 					{
-						Object rowId = musicAlbumsTable.getValue();
-					    id = (Integer) musicAlbumsTable.getContainerProperty(rowId, "id").getValue();
+						id=1;
 					}
 					else
 					{
@@ -369,25 +374,19 @@ public class VaadinApp extends UI {
 						id=id+1;
 						}
 					}
+					if(sMainOperationType.equals("Add")!=true)
+					{
+						Object rowId = musicAlbumsTable.getValue();
+					    id = (Integer) musicAlbumsTable.getContainerProperty(rowId, "id").getValue();
+					}
+					
 					
 					System.out.println(tableSize);
-					if(tableSize!=0)
-					{
+					
 					musicAlbum2.setId(id);
 					musicAlbum2.setArtistName(binder.getField("artistName").getValue().toString());
 					musicAlbum2.setAlbumName(binder.getField("albumName").getValue().toString());
 					musicAlbum2.setImage(binder.getField("image").getValue().toString());
-					}
-					else
-					{
-					musicAlbum2.setId(id);
-					String sArtistName = binder.getField("artistName").getValue().toString();
-					musicAlbum2.setArtistName(binder.getField("artistName").getValue().toString());
-					String sAlbumNam = binder.getField("albumName").getValue().toString();
-					musicAlbum2.setAlbumName(binder.getField("albumName").getValue().toString());
-					String image = binder.getField("image").getValue().toString();
-					musicAlbum2.setImage(binder.getField("image").getValue().toString());
-					}
 				
 					if(sMainOperationType.equals("Add"))
 					{
@@ -427,19 +426,15 @@ public class VaadinApp extends UI {
 		{
 			setModal(true);
 			center();
+			
 			VerticalLayout verticalLayout = new VerticalLayout();
 			Object rowId = musicAlbumsTable.getValue();
-			
 			Label lArtistName = new Label((String) musicAlbumsTable.getContainerProperty(rowId, "artistName").getValue());
-			Label lAlbumName = new Label((String) musicAlbumsTable.getContainerProperty(rowId, "albumName").getValue());
-			
 			Image currentAlbumImage = new Image((String) musicAlbumsTable.getContainerProperty(rowId, "albumName").getValue(), 
 					new ExternalResource((String) musicAlbumsTable.getContainerProperty(rowId, "image").getValue()));
 		
 			verticalLayout.addComponent(lArtistName);
-			verticalLayout.addComponent(lAlbumName);
 			verticalLayout.addComponent(currentAlbumImage);
-			
 			verticalLayout.setMargin(true);
 			
 			setContent(verticalLayout);
